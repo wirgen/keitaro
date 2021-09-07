@@ -1,0 +1,36 @@
+{
+    "name": "wirgen/keitaro",
+    "type": "library",
+    "description": "Library for Keitaro Admin API",
+    "keywords": [
+        "keitaro",
+        "api"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Denis Nikiforov",
+            "email": "my.wirgen@gmail.com",
+            "homepage": "https://wirgen.by"
+        }
+    ],
+    "require": {
+        "php": "^7.1|^8.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.6",
+        "phpstan/phpstan": "^0.12.98",
+        "vimeo/psalm": "^4.10",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wirgen\\Keitaro\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}
