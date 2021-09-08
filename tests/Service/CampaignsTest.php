@@ -59,6 +59,15 @@ class CampaignsTest extends TestCase
         $this->assertContainsOnlyInstancesOf(Campaign::class, $result);
     }
 
+    public function testEmpty(): void
+    {
+        try {
+            $this->keitaro->createCampaign([]);
+        } catch (Exception $e) {
+            $this->assertEquals(406, $e->getCode());
+        }
+    }
+
     /**
      * @throws Exception
      */

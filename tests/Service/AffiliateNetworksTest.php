@@ -26,6 +26,15 @@ class AffiliateNetworksTest extends TestCase
         $this->assertContainsOnlyInstancesOf(AffiliateNetwork::class, $result);
     }
 
+    public function testEmpty(): void
+    {
+        try {
+            $this->keitaro->createAffiliateNetwork([]);
+        } catch (Exception $e) {
+            $this->assertEquals(406, $e->getCode());
+        }
+    }
+
     /**
      * @throws Exception
      */
