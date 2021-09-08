@@ -15,7 +15,7 @@
         </include>
     </coverage>
     <php>
-        <env name="KEITARO_API_PATH" value="https://demo-ru.keitaro.io/admin_api/v1"/>
-        <env name="KEITARO_API_KEY" value="6f3cf1de28de130c3bd43b56a6bec723"/>
+        <env name="KEITARO_API_DOMAIN" value="https://demo-ru.keitaro.io"/>
+        <env name="KEITARO_API_KEY" value="74f5bacb062ddda846fcf8b50179febf"/>
     </php>
 </phpunit>

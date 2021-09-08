@@ -13,6 +13,6 @@ abstract class TestCase extends BaseTestCase
 
     public function setup(): void
     {
-        $this->keitaro = new Keitaro(getenv('KEITARO_API_PATH'), getenv('KEITARO_API_KEY'));
+        $this->keitaro = new Keitaro(getenv('KEITARO_API_DOMAIN'), getenv('KEITARO_API_KEY'));
     }
 }
