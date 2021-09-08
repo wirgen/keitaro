@@ -433,6 +433,20 @@ class Keitaro
 
     /* * * * * * * * * * Reports * * * * * * * * * */
 
+    /**
+     * Build a Custom Report
+     *
+     * @param array $data
+     * @return Report
+     * @throws Exception
+     */
+    public function buildCustomReport(array $data): Report
+    {
+        return new Report(
+            $this->request('post', "/report/build", array_filter($data))
+        );
+    }
+
     /* * * * * * * * * * Traffic Sources * * * * * * * * * */
 
     /* * * * * * * * * * Users * * * * * * * * * */
