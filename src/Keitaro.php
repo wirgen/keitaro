@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Wirgen\Keitaro;
 
 use Exception;
-use Wirgen\Keitaro\Response\AffiliateNetwork;
-use Wirgen\Keitaro\Response\Campaign;
-use Wirgen\Keitaro\Response\Group;
+use Wirgen\Keitaro\Model\AffiliateNetwork;
+use Wirgen\Keitaro\Model\Campaign;
+use Wirgen\Keitaro\Model\Group;
 
 /**
  * Class Keitaro
@@ -23,24 +23,9 @@ class Keitaro
 
     public function __construct(string $apiPath, string $apiKey)
     {
-        $this->apiPath = $apiPath;
+        $this->apiPath = "$apiPath/admin_api/v1";
         $this->apiKey = $apiKey;
     }
-
-    /**
-     * Get the list of all Affiliate Networks
-     *
-     * @return AffiliateNetwork[]
-     * @throws Exception
-     */
-    public function getAllAffiliateNetworks(): array
-    {
-        return array_map(static function ($item) {
-            return new AffiliateNetwork($item);
-        }, $this->request('get', "/affiliate_networks"));
-    }
-
-    /* * * * * * * * * * Affiliate Networks * * * * * * * * * */
 
     /**
      * Request to API server
@@ -96,32 +81,33 @@ class Keitaro
         return $result;
     }
 
+    /* * * * * * * * * * Affiliate Networks * * * * * * * * * */
+
+    /**
+     * Get the list of all Affiliate Networks
+     *
+     * @return AffiliateNetwork[]
+     * @throws Exception
+     */
+    public function getAllAffiliateNetworks(): array
+    {
+        return array_map(static function ($item) {
+            return new AffiliateNetwork($item);
+        }, $this->request('get', "/affiliate_networks"));
+    }
+
     /**
      * Create a new Affiliate Network
      *
-     * @param string $name
-     * @param string $postback_url
-     * @param string $offer_param
-     * @param string $notes
+     * @param array $data
      * @return AffiliateNetwork
      * @throws Exception
      */
-    public function createAffiliateNetwork(
-        string $name,
-        string $postback_url = '',
-        string $offer_param = '',
-        string $notes = ''
-    ): AffiliateNetwork {
-        $data = array_filter(
-            [
-                'name' => $name,
-                'postback_url' => $postback_url,
-                'offer_param' => $offer_param,
-                'notes' => $notes,
-            ]
+    public function createAffiliateNetwork(array $data): AffiliateNetwork
+    {
+        return new AffiliateNetwork(
+            $this->request('post', "/affiliate_networks", array_filter($data))
         );
-
-        return new AffiliateNetwork($this->request('post', "/affiliate_networks", $data));
     }
 
     /**
@@ -133,49 +119,35 @@ class Keitaro
      */
     public function getAffiliateNetwork(int $id): AffiliateNetwork
     {
-        return new AffiliateNetwork($this->request('get', "/affiliate_networks/$id"));
+        return new AffiliateNetwork(
+            $this->request('get', "/affiliate_networks/$id")
+        );
     }
 
     /**
      * Update an Affiliate Network
      *
      * @param int $id
-     * @param string $name
-     * @param string $postback_url
-     * @param string $offer_param
-     * @param string $notes
+     * @param array $data
      * @return AffiliateNetwork
      * @throws Exception
      */
-    public function updateAffiliateNetwork(
-        int $id,
-        string $name = '',
-        string $postback_url = '',
-        string $offer_param = '',
-        string $notes = ''
-    ): AffiliateNetwork {
-        $data = array_filter(
-            [
-                'name' => $name,
-                'postback_url' => $postback_url,
-                'offer_param' => $offer_param,
-                'notes' => $notes,
-            ]
+    public function updateAffiliateNetwork(int $id, array $data): AffiliateNetwork
+    {
+        return new AffiliateNetwork(
+            $this->request('put', "/affiliate_networks/$id", array_filter($data))
         );
-
-        return new AffiliateNetwork($this->request('put', "/affiliate_networks/$id", $data));
     }
 
     /**
      * Move Affiliate Network to Archive
      *
      * @param int $id
-     * @return AffiliateNetwork
      * @throws Exception
      */
-    public function moveAffiliateNetworkToArchive(int $id): AffiliateNetwork
+    public function moveAffiliateNetworkToArchive(int $id): void
     {
-        return new AffiliateNetwork($this->request('delete', "/affiliate_networks/$id"));
+        $this->request('delete', "/affiliate_networks/$id");
     }
 
     /**
@@ -187,7 +159,9 @@ class Keitaro
      */
     public function cloneAffiliateNetwork(int $id): AffiliateNetwork
     {
-        return new AffiliateNetwork($this->request('post', "/affiliate_networks/$id/clone")[0]);
+        $result = $this->request('post', "/affiliate_networks/$id/clone");
+
+        return new AffiliateNetwork($result[0]);
     }
 
     /* * * * * * * * * * Bot Lists * * * * * * * * * */
@@ -205,6 +179,135 @@ class Keitaro
         return array_map(static function ($item) {
             return new Campaign($item);
         }, $this->request('get', "/campaigns"));
+    }
+
+    /**
+     * Create a Campaign
+     *
+     * @param array $data
+     * @return Campaign
+     * @throws Exception
+     */
+    public function createCampaign(array $data): Campaign
+    {
+        return new Campaign(
+            $this->request('post', "/campaigns", array_filter($data))
+        );
+    }
+
+    /**
+     * Get a Campaign
+     *
+     * @param int $id
+     * @return Campaign
+     * @throws Exception
+     */
+    public function getCampaign(int $id): Campaign
+    {
+        return new Campaign(
+            $this->request('get', "/campaigns/$id")
+        );
+    }
+
+    /**
+     * Update a Campaign
+     *
+     * @param int $id
+     * @param array $data
+     * @return Campaign
+     * @throws Exception
+     */
+    public function updateCampaign(int $id, array $data): Campaign
+    {
+        return new Campaign(
+            $this->request('put', "/campaigns/$id", array_filter($data))
+        );
+    }
+
+    /**
+     * Move Campaign to Archive
+     *
+     * @param int $id
+     * @throws Exception
+     */
+    public function moveCampaignToArchive(int $id): void
+    {
+        $this->request('delete', "/campaigns/$id");
+    }
+
+    /**
+     * Clone a Campaign
+     *
+     * @param int $id
+     * @return Campaign
+     * @throws Exception
+     */
+    public function cloneCampaign(int $id): Campaign
+    {
+        $result = $this->request('post', "/campaigns/$id/clone");
+
+        return new Campaign($result[0]);
+    }
+
+    /**
+     * Disable a Campaign
+     *
+     * @param int $id
+     * @throws Exception
+     */
+    public function disableCampaign(int $id): void
+    {
+        $this->request('post', "/campaigns/$id/disable");
+    }
+
+    /**
+     * Enable a Campaign
+     *
+     * @param int $id
+     * @throws Exception
+     */
+    public function enableCampaign(int $id): void
+    {
+        $this->request('post', "/campaigns/$id/enable");
+    }
+
+    /**
+     * Restore a Campaign
+     *
+     * @param int $id
+     * @throws Exception
+     */
+    public function restoreCampaign(int $id): void
+    {
+        $this->request('post', "/campaigns/$id/restore");
+    }
+
+    /**
+     * Update Campaign Costs
+     *
+     * @param int $id
+     * @param array $data
+     * @return Campaign
+     * @throws Exception
+     */
+    public function updateCampaignCosts(int $id, array $data): Campaign
+    {
+        return new Campaign(
+            $this->request('post', "/campaigns/$id/restore", array_filter($data))
+        );
+    }
+
+    /**
+     * Get Deleted Campaigns
+     *
+     * @return Campaign[]
+     * @throws Exception
+     */
+    public function getDeletedCampaigns(): array
+    {
+        return array_map(static function ($item) {
+            return new Campaign($item);
+        }, $this->request('get', "/campaigns/deleted"));
     }
 
     /* * * * * * * * * * Streams * * * * * * * * * */

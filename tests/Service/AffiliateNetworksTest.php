@@ -6,7 +6,7 @@ namespace Tests\Service;
 
 use Exception;
 use Tests\TestCase;
-use Wirgen\Keitaro\Response\AffiliateNetwork;
+use Wirgen\Keitaro\Model\AffiliateNetwork;
 
 class AffiliateNetworksTest extends TestCase
 {
@@ -34,7 +34,7 @@ class AffiliateNetworksTest extends TestCase
         $list = $this->keitaro->getAllAffiliateNetworks();
 
         $this->expectExceptionCode(406);
-        $this->keitaro->createAffiliateNetwork($list[0]->name);
+        $this->keitaro->createAffiliateNetwork(['name' => $list[0]->name]);
     }
 
     /**
@@ -46,7 +46,7 @@ class AffiliateNetworksTest extends TestCase
         $data['name'] .= '.' . microtime(true);
 
         $object = new AffiliateNetwork($data);
-        $result = $this->keitaro->createAffiliateNetwork(...$data);
+        $result = $this->keitaro->createAffiliateNetwork($data);
         array_map(function ($key) use ($object, $result) {
             $this->assertEquals($object->$key, $result->$key);
         }, array_keys($data));
@@ -85,7 +85,7 @@ class AffiliateNetworksTest extends TestCase
 
         $data = self::DATA;
         $data['name'] .= '.' . microtime(true);
-        $result = $this->keitaro->updateAffiliateNetwork($list[0]->id, ...$data);
+        $result = $this->keitaro->updateAffiliateNetwork($list[0]->id, $data);
         $this->assertNotEquals($list[0], $result);
     }
 

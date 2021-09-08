@@ -6,7 +6,7 @@ namespace Tests\Service;
 
 use Exception;
 use Tests\TestCase;
-use Wirgen\Keitaro\Response\Group;
+use Wirgen\Keitaro\Model\Group;
 
 class GroupsTest extends TestCase
 {
