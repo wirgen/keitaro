@@ -34,14 +34,14 @@ class Keitaro
      * @param string $method
      * @param string $path
      * @param array $params
-     * @return array
+     * @return array|null
      * @throws Exception
      */
     public function request(
         string $method,
         string $path,
         array $params = []
-    ): array {
+    ): ?array {
         if ($this->curlHandler === null) {
             $this->curlHandler = curl_init();
             curl_setopt($this->curlHandler, CURLOPT_HTTPHEADER, [
@@ -381,6 +381,46 @@ class Keitaro
         return array_map(static function ($item) {
             return new Group($item);
         }, $this->request('get', "/groups", ['type' => $type]));
+    }
+
+    /**
+     * Create a Group
+     *
+     * @param array $data
+     * @return Group
+     * @throws Exception
+     */
+    public function createGroup(array $data): Group
+    {
+        return new Group(
+            $this->request('post', "/groups", array_filter($data))
+        );
+    }
+
+    /**
+     * Update a Group
+     *
+     * @param int $id
+     * @param array $data
+     * @return Group
+     * @throws Exception
+     */
+    public function updateGroup(int $id, array $data): Group
+    {
+        return new Group(
+            $this->request('put', "/groups/$id", array_filter($data))
+        );
+    }
+
+    /**
+     * Delete a Group
+     *
+     * @param int $id
+     * @throws Exception
+     */
+    public function deleteGroup(int $id): void
+    {
+        $this->request('delete', "/groups/$id/delete");
     }
 
     /* * * * * * * * * * Integrations * * * * * * * * * */
