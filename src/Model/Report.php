@@ -9,7 +9,7 @@ namespace Wirgen\Keitaro\Model;
  *
  * @property array $rows
  * @property int $total
- * @property array $meta
+ * @property ReportMeta $meta
  *
  * @package Wirgen\Keitaro\Model
  */
@@ -23,6 +23,6 @@ class Report
     {
         $this->rows = $data['rows'] ?? [];
         $this->total = $data['total'] ?? 0;
-        $this->meta = $data['meta'] ?? [];
+        $this->meta = new ReportMeta($data['meta'] ?? []);
     }
 }

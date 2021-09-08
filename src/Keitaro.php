@@ -8,6 +8,7 @@ use Exception;
 use Wirgen\Keitaro\Model\AffiliateNetwork;
 use Wirgen\Keitaro\Model\Campaign;
 use Wirgen\Keitaro\Model\Group;
+use Wirgen\Keitaro\Model\Report;
 
 /**
  * Class Keitaro
@@ -73,7 +74,7 @@ class Keitaro
                     }, $result, array_keys($result))
                 );
             } else {
-                $error = $result['error'] ?? json_encode($result);
+                $error = ($result['error'] ?? json_encode($result)) . " ($httpCode)";
             }
             throw new Exception($error, $httpCode);
         }
@@ -312,11 +313,59 @@ class Keitaro
 
     /* * * * * * * * * * Streams * * * * * * * * * */
 
-    /* * * * * * * * * * Clean Stats * * * * * * * * * */
-
     /* * * * * * * * * * Clicks * * * * * * * * * */
 
+    /**
+     * Clean Stats
+     *
+     * @param array $data
+     * @throws Exception
+     */
+    public function cleanStats(array $data): void
+    {
+        $this->request('post', "/clicks/clean", array_filter($data));
+    }
+
+    /**
+     * Retrieve click log
+     *
+     * @param array $data
+     * @return Report
+     * @throws Exception
+     */
+    public function retrieveClickLog(array $data): Report
+    {
+        return new Report(
+            $this->request('post', "/clicks/log", array_filter($data))
+        );
+    }
+
+    /**
+     * Update Clicks Costs
+     *
+     * @param array $data
+     * @throws Exception
+     */
+    public function updateClicksCosts(array $data): void
+    {
+        $this->request('post', "/clicks/update_costs", array_filter($data));
+    }
+
     /* * * * * * * * * * Conversions * * * * * * * * * */
+
+    /**
+     * Get Conversions
+     *
+     * @param array $data
+     * @return Report
+     * @throws Exception
+     */
+    public function getConversions(array $data): Report
+    {
+        return new Report(
+            $this->request('post', "/conversions/log", array_filter($data))
+        );
+    }
 
     /* * * * * * * * * * Domains * * * * * * * * * */
 
