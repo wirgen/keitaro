@@ -16,7 +16,6 @@ class ReportsTest extends TestCase
     public function testBuildReport(): void
     {
         $list = $this->keitaro->getAllCampaigns();
-        $lastKey = array_key_last($list);
 
         $data = [
             'range' => ['interval' => 'today'],
@@ -25,12 +24,12 @@ class ReportsTest extends TestCase
                 [
                     'name' => 'campaign_id',
                     'operator' => 'EQUALS',
-                    'expression' => $list[$lastKey]->id,
+                    'expression' => $list[0]->id,
                 ],
             ],
         ];
         $result = $this->keitaro->buildCustomReport($data);
-        $this->assertEquals($list[$lastKey]->id, $result->rows[0]['campaign_id']);
+        $this->assertEquals($list[0]->id, $result->rows[0]['campaign_id']);
         $this->assertGreaterThanOrEqual(
             (new DateTime())->setTime(0, 0),
             new DateTime($result->rows[0]['datetime'])

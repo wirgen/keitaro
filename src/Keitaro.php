@@ -9,6 +9,7 @@ use Wirgen\Keitaro\Model\AffiliateNetwork;
 use Wirgen\Keitaro\Model\Campaign;
 use Wirgen\Keitaro\Model\Group;
 use Wirgen\Keitaro\Model\Report;
+use Wirgen\Keitaro\Model\User;
 
 /**
  * Class Keitaro
@@ -374,9 +375,11 @@ class Keitaro
     /**
      * Get Groups
      *
+     * @param string $type
+     * @return Group[]
      * @throws Exception
      */
-    public function getGroups($type = 'campaigns'): array
+    public function getGroups(string $type = 'campaigns'): array
     {
         return array_map(static function ($item) {
             return new Group($item);
@@ -450,4 +453,86 @@ class Keitaro
     /* * * * * * * * * * Traffic Sources * * * * * * * * * */
 
     /* * * * * * * * * * Users * * * * * * * * * */
+
+    /**
+     * Get Users
+     *
+     * @return User[]
+     * @throws Exception
+     */
+    public function getUsers(): array
+    {
+        return array_map(static function ($item) {
+            return new User($item);
+        }, $this->request('get', "/users"));
+    }
+
+    /**
+     * Create a User
+     *
+     * @param array $data
+     * @return User
+     * @throws Exception
+     */
+    public function createUser(array $data): User
+    {
+        return new User(
+            $this->request('post', "/users", array_filter($data))
+        );
+    }
+
+    /**
+     * Get a User
+     *
+     * @param int $id
+     * @return User
+     * @throws Exception
+     */
+    public function getUser(int $id): User
+    {
+        return new User(
+            $this->request('get', "/users/$id")
+        );
+    }
+
+    /**
+     * Update a User
+     *
+     * @param int $id
+     * @param array $data
+     * @return User
+     * @throws Exception
+     */
+    public function updateUser(int $id, array $data): User
+    {
+        return new User(
+            $this->request('put', "/users/$id", array_filter($data))
+        );
+    }
+
+    /**
+     * Remove a User
+     *
+     * @param int $id
+     * @throws Exception
+     */
+    public function removeUser(int $id): void
+    {
+        $this->request('delete', "/users/$id");
+    }
+
+    /**
+     * Update User Access Data
+     *
+     * @param int $id
+     * @param array $data
+     * @return User
+     * @throws Exception
+     */
+    public function updateUserAccessData(int $id, array $data): User
+    {
+        return new User(
+            $this->request('put', "/users/$id/access", array_filter($data))
+        );
+    }
 }
