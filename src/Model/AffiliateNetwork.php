@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wirgen\Keitaro\Response;
+namespace Wirgen\Keitaro\Model;
 
 /**
  * Class AffiliateNetwork
@@ -19,7 +19,7 @@ namespace Wirgen\Keitaro\Response;
  * @property string $updated_at
  * @property int $offers
  *
- * @package Wirgen\Keitaro\Response
+ * @package Wirgen\Keitaro\Model
  */
 class AffiliateNetwork
 {

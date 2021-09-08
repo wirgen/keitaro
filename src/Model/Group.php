@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wirgen\Keitaro\Response;
+namespace Wirgen\Keitaro\Model;
 
 /**
  * Class Group
@@ -12,7 +12,7 @@ namespace Wirgen\Keitaro\Response;
  * @property int $position
  * @property string $type
  *
- * @package Wirgen\Keitaro\Response
+ * @package Wirgen\Keitaro\Model
  */
 class Group
 {

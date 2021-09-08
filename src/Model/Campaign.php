@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wirgen\Keitaro\Response;
+namespace Wirgen\Keitaro\Model;
 
 /**
  * Class Campaign
@@ -23,11 +23,11 @@ namespace Wirgen\Keitaro\Response;
  * @property int $traffic_source_id
  * @property string $token
  * @property bool $cost_auto
- * @property array $parameters
- * @property array $postbacks
+ * @property SourceParameters $parameters
+ * @property S2SPostback[] $postbacks
  * @property string $notes
  *
- * @package Wirgen\Keitaro\Response
+ * @package Wirgen\Keitaro\Model
  */
 class Campaign
 {
@@ -69,7 +69,7 @@ class Campaign
         $this->traffic_source_id = $data['traffic_source_id'] ?? 0;
         $this->token = $data['token'] ?? '';
         $this->cost_auto = $data['cost_auto'] ?? false;
-        $this->parameters = $data['parameters'] ?? [];
+        $this->parameters = new SourceParameters($data['parameters'] ?? []);
         $this->postbacks = $data['postbacks'] ?? [];
         $this->notes = $data['notes'] ?? '';
     }
