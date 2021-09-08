@@ -33,8 +33,11 @@ class AffiliateNetworksTest extends TestCase
     {
         $list = $this->keitaro->getAllAffiliateNetworks();
 
-        $this->expectExceptionCode(406);
-        $this->keitaro->createAffiliateNetwork(['name' => $list[0]->name]);
+        try {
+            $this->keitaro->createAffiliateNetwork(['name' => $list[0]->name]);
+        } catch (Exception $e) {
+            $this->assertEquals(406, $e->getCode());
+        }
     }
 
     /**
@@ -52,13 +55,13 @@ class AffiliateNetworksTest extends TestCase
         }, array_keys($data));
     }
 
-    /**
-     * @throws Exception
-     */
     public function testGetNotFound(): void
     {
-        $this->expectExceptionCode(404);
-        $this->keitaro->getAffiliateNetwork(0);
+        try {
+            $this->keitaro->getAffiliateNetwork(0);
+        } catch (Exception $e) {
+            $this->assertEquals(404, $e->getCode());
+        }
     }
 
     /**

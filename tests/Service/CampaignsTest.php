@@ -66,8 +66,11 @@ class CampaignsTest extends TestCase
     {
         $list = $this->keitaro->getAllCampaigns();
 
-        $this->expectExceptionCode(406);
-        $this->keitaro->createCampaign(['alias' => $list[0]->alias]);
+        try {
+            $this->keitaro->createCampaign(['alias' => $list[0]->alias]);
+        } catch (Exception $e) {
+            $this->assertEquals(406, $e->getCode());
+        }
     }
 
     /**
@@ -86,13 +89,13 @@ class CampaignsTest extends TestCase
         }, array_keys($data));
     }
 
-    /**
-     * @throws Exception
-     */
     public function testGetNotFound(): void
     {
-        $this->expectExceptionCode(404);
-        $this->keitaro->getCampaign(0);
+        try {
+            $this->keitaro->getCampaign(0);
+        } catch (Exception $e) {
+            $this->assertEquals(404, $e->getCode());
+        }
     }
 
     /**
@@ -133,8 +136,11 @@ class CampaignsTest extends TestCase
         $this->keitaro->getCampaign($list[$lastKey]->id);
 
         $this->keitaro->moveCampaignToArchive($list[$lastKey]->id);
-        $this->expectExceptionCode(404);
-        $this->keitaro->getCampaign($list[$lastKey]->id);
+        try {
+            $this->keitaro->getCampaign($list[$lastKey]->id);
+        } catch (Exception $e) {
+            $this->assertEquals(404, $e->getCode());
+        }
 
         $this->keitaro->restoreCampaign($list[$lastKey]->id);
         $result = $this->keitaro->getCampaign($list[$lastKey]->id);
