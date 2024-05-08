@@ -50,6 +50,7 @@ class Keitaro
                 "Api-Key: $this->apiKey",
                 "Content-Type: application/json",
             ]);
+            curl_setopt($this->curlHandler, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($this->curlHandler, CURLOPT_RETURNTRANSFER, true);
         }
 
